@@ -1,0 +1,280 @@
+version: '3'
+
+networks:
+  ics:
+    name: ics
+    driver: bridge
+    ipam:
+      config: 
+        - subnet: 192.168.192.0/24
+
+services:
+  
+  tshark:
+    image: oihan27/tshark:tshark
+    container_name: tshark
+    privileged: true
+    network_mode: host
+    restart: unless-stopped
+
+  interface:
+    image: frolvlad/alpine-gxx
+    container_name: interface
+    command: sh -c "g++ /Interface/simlink.cpp -o simlink -pthread && tail -F /dev/null && ./simlink" #Ejecuta el archivo .cpp con la ayuda del .cfg
+    volumes: 
+      - ../../../wwtp/interface_simLink:/Interface
+    restart: unless-stopped
+    networks:
+      ics:
+        ipv4_address: 192.168.192.2
+
+  matlab_simulink: #Contiene el programa de Matlab/Simulink
+    image: sflorenz05/matlab_simulink:v0.3
+    container_name: matlab_simulink
+    shm_size: 512M
+    ports:
+      - "5901:5901"
+      - "6080:6080"
+    command: -vnc
+    volumes:
+      - /wwtp/simulink:/home/matlab/Documents/MATLAB/simulink
+    restart: unless-stopped
+    networks:
+      ics:
+        ipv4_address: 192.168.192.4
+
+  openplc: #Contiene el OpenPLC runtime
+    image: sflorenz05/open-plc:v0.1
+    container_name: openplc
+    ports:
+      - "502:502"
+      - "8080:8080"
+    command: -privileged
+    restart: unless-stopped
+    networks:
+      ics:
+        ipv4_address: 192.168.192.3
+
+  clientperf1:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf1
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.5
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf2:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf2
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.6
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf3:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf3
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.7
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf4:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf4
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.8
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf5:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf5
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.9
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf6:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf6
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.10
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf7:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf7
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.11
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf8:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf8
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.12
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf9:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf9
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.13
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf10:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf10
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.14
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf11:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf11
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.15
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf12:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf12
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.16
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf13:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf13
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.17
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf14:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf14
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.18
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf15:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf15
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.19
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf16:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf16
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    volumes:
+      - /wwtp/simulink/performance:/Clients
+    networks:
+      ics:
+        ipv4_address: 192.168.192.20
+    environment:
+      - AUTO_SERVER_HOST=openplc
