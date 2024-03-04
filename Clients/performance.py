@@ -72,8 +72,7 @@ def single_client_test(host, cycles):
         #client = ModbusSerialClient(method="rtu",
         #port="/dev/ttyp0", baudrate=9600)
         while count < cycles:
-            RandomQri=random.randint(15000,65000)
-            print(RandomQri)
+            RandomQri=random.randint(15000,65535)
             RandomQw=random.randint(600,1200)
             RandomKla=random.randint(50,175)
             with _thread_lock:
