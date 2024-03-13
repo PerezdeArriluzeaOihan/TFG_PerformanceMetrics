@@ -8,13 +8,19 @@ networks:
       config: 
         - subnet: 192.168.192.0/24
 
+volumes:
+  grafana-data:
+  prometheus-data:
+
 services:
-  
+
   tshark:
     image: oihan27/tshark:tshark
     build: 
       context: ./Tshark
     container_name: tshark
+    volumes:
+      - /Tshark:/home/captures
     privileged: true
     network_mode: host
     restart: unless-stopped
@@ -57,11 +63,65 @@ services:
       ics:
         ipv4_address: 192.168.192.3
 
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   container_name: grafana
+  #   environment:
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - prometheus
+  #   restart: unless-stopped
+  #   networks:
+  #     - ics
+
+  # prometheus:
+  #   image: prom/prometheus:v2.33.0
+  #   container_name: prometheus
+  #   volumes:
+  #      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  #      - prometheus-data:/prometheus
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
+  #     - '--storage.tsdb.path=/prometheus'
+  #     - '--storage.tsdb.retention.time=120h'
+  #     - '--web.enable-lifecycle'
+  #     - '--web.console.libraries=/etc/prometheus/console_libraries'
+  #     - '--web.console.templates=/etc/prometheus/consoles'
+  #   ports:
+  #     - "9090:9090"
+  #   depends_on:
+  #     - cadvisor
+  #   restart: unless-stopped
+  #   networks:
+  #     - ics
+  #   links:
+  #     - cadvisor:cadvisor
+
+  # cadvisor:
+  #   image: gcr.io/cadvisor/cadvisor:latest
+  #   container_name: cadvisor
+  #   privileged: true
+  #   pid: host
+  #   network_mode: host
+  #   volumes:
+  #     - /:/rootfs:ro
+  #     - /var/run:/var/run:rw
+  #     - /sys:/sys:ro
+  #     - /var/lib/docker/:/var/lib/docker:ro
+  #     - /dev/disk/:/dev/disk:ro
+  #   expose:
+  #     - 8080
+  #   restart: unless-stopped
+
   clientperf1:
     image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf1
     build: 
       context: ./Clients
-    container_name: clientperf1
     restart: unless-stopped
     depends_on:
       - openplc

@@ -12,7 +12,11 @@ services:
   
   tshark:
     image: oihan27/tshark:tshark
+    build: 
+      context: ./Tshark
     container_name: tshark
+    volumes:
+      - /Tshark:/home/captures
     privileged: true
     network_mode: host
     restart: unless-stopped
@@ -20,7 +24,7 @@ services:
   interface:
     image: frolvlad/alpine-gxx
     container_name: interface
-    command: sh -c "g++ /Interface/simlink.cpp -o simlink -pthread && tail -F /dev/null && ./simlink" #Ejecuta el archivo .cpp con la ayuda del .cfg
+    command: sh -c "g++ /Interface/simlink.cpp -o Interface/simlink -pthread && tail -F /dev/null" #Ejecuta el archivo .cpp con la ayuda del .cfg
     volumes: 
       - ../../../wwtp/interface_simLink:/Interface
     restart: unless-stopped
@@ -58,11 +62,11 @@ services:
   clientperf1:
     image: oihan27/tcpclient:performance #Ejecuta performance.py
     container_name: clientperf1
+    build: 
+      context: ./Clients
     restart: unless-stopped
     depends_on:
       - openplc
-    volumes:
-      - /wwtp/simulink/performance:/Clients
     networks:
       ics:
         ipv4_address: 192.168.192.5
@@ -72,11 +76,11 @@ services:
   clientperf2:
     image: oihan27/tcpclient:performance #Ejecuta performance.py
     container_name: clientperf2
+    build: 
+      context: ./Clients
     restart: unless-stopped
     depends_on:
       - openplc
-    volumes:
-      - /wwtp/simulink/performance:/Clients
     networks:
       ics:
         ipv4_address: 192.168.192.6

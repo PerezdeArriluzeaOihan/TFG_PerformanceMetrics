@@ -282,3 +282,227 @@ services:
         ipv4_address: 192.168.192.20
     environment:
       - AUTO_SERVER_HOST=openplc
+
+  clientperf17:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf17
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.21
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf18:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf18
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.22
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf19:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf19
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.23
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf20:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf20
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.24
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf21:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf21
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.25
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf22:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf22
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.26
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf23:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf23
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.27
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf24:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf24
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.28
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf25:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf25
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.29
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf26:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf26
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.30
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf27:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf27
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.31
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf28:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf28
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.32
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf29:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf29
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.33
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf30:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf30
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.34
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf31:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf31
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.35
+    environment:
+      - AUTO_SERVER_HOST=openplc
+
+  clientperf32:
+    image: oihan27/tcpclient:performance #Ejecuta performance.py
+    container_name: clientperf32
+    build: 
+      context: ./Clients
+    restart: unless-stopped
+    depends_on:
+      - openplc
+    networks:
+      ics:
+        ipv4_address: 192.168.192.36
+    environment:
+      - AUTO_SERVER_HOST=openplc

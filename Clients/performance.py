@@ -48,6 +48,10 @@ server_ip_address=socket.gethostbyname(host)
 server_port=502
 UNIT= 0x1
 
+maxtime=0.0
+mintime=0.0
+avgtime=0.0
+
 # --------------------------------------------------------------------------- # 
 # perform the test
 # --------------------------------------------------------------------------- # 
@@ -84,7 +88,7 @@ def single_client_test(host, cycles):
                 # client.write_register(1,count) #Cambia el valor de la dirección de memoria 1 (Qw)
                 # client.write_register(2,count) #Cambia el valor de la dirección de memoria 2 (Kla)
                 rr = client.read_holding_registers(0, 3, unit=1)
-                print("Reading Holding Registers %s" % (rr.registers))
+                # print("Reading Holding Registers %s" % (rr.registers))
                 count += 1
         client.close()
     except:
@@ -109,6 +113,8 @@ if __name__ == "__main__":
     logger = log_to_stderr()
     logger.setLevel(logging.DEBUG)
     logger.propagate = False
+    n=0
+    totaltime=0
     while True:
         time.sleep(1)
         procs = [Worker(target=single_client_test, args=args)
@@ -120,3 +126,12 @@ if __name__ == "__main__":
         logger.debug("%d requests/second" % ((1.0 * cycles) / (toc - tic)))
         logger.debug("time taken to complete %s cycle by "
             "%s workers is %s seconds" % (cycles, workers, toc-tic))
+        n += 1
+        if n>6:
+            totaltime=totaltime+(toc-tic)
+            maxtime=max(maxtime,toc-tic)
+            mintime=min(mintime,toc-tic)
+            avgtime=(totaltime/(n-6))
+            logger.debug("Maximun time taken by %d cycles is %s seconds" % (cycles, maxtime))
+            logger.debug("Minimun time taken by %d cycles is %s seconds" % (cycles, mintime))
+            logger.debug("Average time of all %d cycles is %s seconds" % (cycles, avgtime))
