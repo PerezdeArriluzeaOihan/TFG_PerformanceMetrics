@@ -26,7 +26,7 @@ services:
     container_name: interface
     command: sh -c "g++ /Interface/simlink.cpp -o Interface/simlink -pthread && tail -F /dev/null" #Ejecuta el archivo .cpp con la ayuda del .cfg
     volumes: 
-      - ../../../wwtp/interface_simLink:/Interface
+      - ./wwtp/interface_simLink:/Interface
     restart: unless-stopped
     networks:
       ics:
@@ -41,7 +41,7 @@ services:
       - "6080:6080"
     command: -vnc
     volumes:
-      - /wwtp/simulink:/home/matlab/Documents/MATLAB/simulink
+      - ./wwtp/simulink:/home/matlab/Documents/MATLAB/simulink
     restart: unless-stopped
     networks:
       ics:
