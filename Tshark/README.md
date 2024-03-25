@@ -10,7 +10,7 @@
 3. tshark -i 2 -c packet_count
     - capture will stop after n packets
 4. tshark -r cap.pcap -Y "display_filter"
-    - -Y falg is a display filter:
+    - -Y flag is a display filter:
         - "ip.src == 192.168.192.5 and ip.dst == 192.168.192.3 and tcp and frame.number>=1320 and frame.number<1330"
 5. gzip file.pcap
     - to compress an existing file
