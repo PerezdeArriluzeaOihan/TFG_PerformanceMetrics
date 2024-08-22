@@ -55,6 +55,13 @@ services:
       - "8080:8080"
     command: -privileged
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"  # Limit to 1 CPU
+          memory: "256M"  # Limit to 256 MB of memory
+    mem_limit: 256m  # Limit to 256 MB of memory
+    cpus: 1.0  # Limit to 1 CPU
     networks:
       ics:
         ipv4_address: 192.168.192.3

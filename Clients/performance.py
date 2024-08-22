@@ -42,12 +42,16 @@ _thread_lock = Lock()
 # * host    - the host to send the requests to
 # --------------------------------------------------------------------------- # 
 workers = 1     # El número de hilos
-cycles = 1000
-host = 'openplc' # ESTO ES SOLO PARA DOCKER COMPOSE, SI NO ES localhost
+cycles = 21
+#host = 'openplc' # ESTO ES SOLO PARA DOCKER COMPOSE, SI NO ES localhost
+host = "10.63.28.62"
 server_ip_address=socket.gethostbyname(host)
+#server_ip_address = "10.63.28.62" 
 server_port=502
 UNIT= 0x1
-
+logger = log_to_stderr()
+logger.setLevel(logging.DEBUG)
+logger.propagate = False
 maxtime=0.0
 mintime=0.0
 avgtime=0.0
@@ -76,19 +80,30 @@ def single_client_test(host, cycles):
         #client = ModbusSerialClient(method="rtu",
         #port="/dev/ttyp0", baudrate=9600)
         while count < cycles:
-            RandomQri=random.randint(15000,65535)
-            RandomQw=random.randint(600,1200)
-            RandomKla=random.randint(50,175)
+            #RandomQri=random.randint(15000,65535)
+            #RandomQw=random.randint(600,1200)
+            #RandomKla=random.randint(50,175)
             with _thread_lock:
                 # client.write_registers(0,[25000,106,100]) #Cambia las direcciones 0,1,2 a los valores iniciales
-                client.write_register(0,RandomQri) #Cambia el valor de la dirección de memoria 0 (Qri)
-                client.write_register(1,RandomQw) #Cambia el valor de la dirección de memoria 1 (Qw)
-                client.write_register(2,RandomKla) #Cambia el valor de la dirección de memoria 2 (Kla)
+                #client.write_register(0,RandomQri) #Cambia el valor de la dirección de memoria 0 (Qri)
+                #client.write_register(1,RandomQw) #Cambia el valor de la dirección de memoria 1 (Qw)
+                #client.write_register(2,RandomKla) #Cambia el valor de la dirección de memoria 2 (Kla)
                 # client.write_register(0,count) #Cambia el valor de la dirección de memoria 0 (Qri)
                 # client.write_register(1,count) #Cambia el valor de la dirección de memoria 1 (Qw)
                 # client.write_register(2,count) #Cambia el valor de la dirección de memoria 2 (Kla)
-                rr = client.read_holding_registers(0, 3, unit=1)
+                #rr = client.read_holding_registers(201, 3, unit=1)
                 # print("Reading Holding Registers %s" % (rr.registers))
+                # Attempt to connect
+                if client.connect():
+                    try:
+                        rr = client.read_holding_registers(201, 3, unit=1)
+                        print(rr)
+                    except Exception as e:
+                        logger.error(f"Failed to read registers: {e}")
+                    finally:
+                        client.close()
+                else:
+                    logger.error("Unable to connect to Modbus server")
                 count += 1
         client.close()
     except:
@@ -110,9 +125,7 @@ def single_client_test(host, cycles):
 
 if __name__ == "__main__":
     args = (host, int(cycles * 1.0 / workers))
-    logger = log_to_stderr()
-    logger.setLevel(logging.DEBUG)
-    logger.propagate = False
+  
     n=0
     totaltime=0
     while True:
@@ -127,11 +140,10 @@ if __name__ == "__main__":
         logger.debug("time taken to complete %s cycle by "
             "%s workers is %s seconds" % (cycles, workers, toc-tic))
         n += 1
-        if n>6:
-            totaltime=totaltime+(toc-tic)
-            maxtime=max(maxtime,toc-tic)
-            mintime=min(mintime,toc-tic)
-            avgtime=(totaltime/(n-6))
-            logger.debug("Maximun time taken by %d cycles is %s seconds" % (cycles, maxtime))
-            logger.debug("Minimun time taken by %d cycles is %s seconds" % (cycles, mintime))
-            logger.debug("Average time of all %d cycles is %s seconds" % (cycles, avgtime))
+        totaltime=totaltime+(toc-tic)
+        maxtime=max(maxtime,toc-tic)
+        mintime=min(mintime,toc-tic)
+        avgtime=(totaltime/n)
+        logger.debug("Maximun time taken by %d cycles is %s seconds" % (cycles, maxtime))
+        logger.debug("Minimun time taken by %d cycles is %s seconds" % (cycles, mintime))
+        logger.debug("Average time of all %d cycles is %s seconds" % (cycles, avgtime))

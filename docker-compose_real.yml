@@ -9,7 +9,7 @@ networks:
         - subnet: 192.168.192.0/24
 
 services:
-  
+
   tshark:
     image: oihan27/tshark:tshark
     build: 
@@ -47,24 +47,19 @@ services:
       ics:
         ipv4_address: 192.168.192.4
 
-  openplc: #Contiene el OpenPLC runtime
-    image: sflorenz05/open-plc:v0.1
-    container_name: openplc
-    ports:
-      - "502:502"
-      - "8080:8080"
-    command: -privileged
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"  # Limit to 1 CPU
-          memory: "256M"  # Limit to 256 MB of memory
-    mem_limit: 256m  # Limit to 256 MB of memory
-    cpus: 1.0  # Limit to 1 CPU
-    networks:
-      ics:
-        ipv4_address: 192.168.192.3
+  # openplc: #Contiene el OpenPLC runtime
+  #   image: turzum/openplc
+  #   container_name: openplc
+  #   ports:
+  #     - "502:502"
+  #     - "8000:8000"
+  #   command: -privileged
+  #   restart: unless-stopped
+  #   networks:
+  #     ics:
+  #       ipv4_address: 192.168.192.3
+  #   environment:
+  #     - AUTO_SERVER_HOST=10.63.28.62
 
   clientperf1:
     image: oihan27/tcpclient:performance #Ejecuta performance.py
@@ -72,24 +67,27 @@ services:
     build: 
       context: ./Clients
     restart: unless-stopped
-    depends_on:
-      - openplc
+    # depends_on:
+    #   - openplc
     networks:
       ics:
         ipv4_address: 192.168.192.5
     environment:
-      - AUTO_SERVER_HOST=openplc
+      - AUTO_SERVER_HOST=10.63.28.62
 
-  clientperf2:
-    image: oihan27/tcpclient:performance #Ejecuta performance.py
-    container_name: clientperf2
-    build: 
-      context: ./Clients
+  scada:
+    image: wzy318/scada-lts:latest 
+    container_name: SCADALTS
+    #build: 
+    #  context: ./Clients
     restart: unless-stopped
-    depends_on:
-      - openplc
+    #depends_on:
+      # - openplc
+    ports:
+      - "8080:8080"
     networks:
       ics:
         ipv4_address: 192.168.192.6
-    environment:
-      - AUTO_SERVER_HOST=openplc
+   # environment:
+    #  - AUTO_SERVER_HOST=10.63.28.62
+
